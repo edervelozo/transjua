@@ -1,0 +1,35 @@
+1 -- Adiciona a coluna 'ativo' na tabela Clientes
+ALTER TABLE Clientes ADD ativo BOOLEAN DEFAULT TRUE;
+
+-- Atualiza todos os clientes para que estejam ativos
+UPDATE Clientes SET ativo = TRUE;
+
+2 -- Adiciona a coluna 'ativo' na tabela Veiculos, se não existir
+ALTER TABLE Veiculos ADD ativo BOOLEAN DEFAULT TRUE;
+
+-- Atualiza os caminhões com ano de fabricação inferior a 2001 para que fiquem inativos
+UPDATE Veiculos 
+SET ativo = FALSE 
+WHERE tipo = 'Cavalo Mecânico' AND ano < 2001;
+ 3- -- Adiciona a coluna 'data_entrega' na tabela Fretes, se não existir
+ALTER TABLE Fretes ADD data_entrega DATE;
+
+-- Atualiza a data de entrega para ser dois dias após a data de saída para fretes com valor maior que 25.000
+UPDATE Fretes 
+SET data_entrega = DATE_ADD(data, INTERVAL 2 DAY) 
+WHERE valor > 25000.00;
+
+4 -- Adiciona a coluna 'data_vencimento_cnh' na tabela Motoristas, se não existir
+ALTER TABLE Motoristas ADD data_vencimento_cnh DATE;
+
+-- Adiciona a coluna 'ativo' na tabela Motoristas, se não existir
+ALTER TABLE Motoristas ADD ativo BOOLEAN DEFAULT TRUE;
+
+-- Atualiza os motoristas cuja CNH esteja vencida para que fiquem inativos
+UPDATE Motoristas 
+SET ativo = FALSE 
+WHERE data_vencimento_cnh < CURDATE();
+
+5 -- Remove todas as apólices de seguro que estão vencidas há mais de 9 anos
+DELETE FROM Seguros 
+WHERE ano < YEAR(CURDATE()) - 9;
